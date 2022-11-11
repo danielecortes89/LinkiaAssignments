@@ -34,42 +34,77 @@ public class Fruits {
     public static void main(String[] args) throws InterruptedException {
         
         int cajaMenor = 20;
-        
-        Fruits pera = new Fruits("pera",2, "Cuantas peras quieres? ", "Unds");
-        Fruits platano = new Fruits("platano", 3, "Cuantos kilos de platano quieres? ", "K");
-        Fruits sandia = new Fruits("sandia", 7, "Cuantos kilos de sandia queires", "K");
-        Fruits mango = new Fruits("mango", 2, "Cuantos mangos quieres?", "Unds");
-        Fruits melocoton = new Fruits("melocoton", 1, "Cuantos melocotones?", "Unds");
-        Fruits manzana = new Fruits("manzana", 1, "Cuantas Manzanas?", "Unds");
-        
-        
-        
-        System.out.println("Bienvenido/a a nuestra fruteria. Hoy tenemos la siguiente seleccion de frutas: ");
+        int subtotal = 0;
+        String factura = """
+                         \tFactura de venta.
+                         Lista de productos:
+                         
+                         Producto\tPrecio/u\tCantidad\tTotal
+                         
+                          """;
+        Fruits[] basket;
+        basket = new Fruits[6];
+        basket[0] = new Fruits("pera",2, "Cuantas peras quieres? ", "Unds");
+        basket[1] = new Fruits("platano", 3, "Cuantos kilos de platano quieres? ", "K");
+        basket[2] = new Fruits("sandia", 7, "Cuantos kilos de sandia queires", "K");
+        basket[3] = new Fruits("mango", 2, "Cuantos mangos quieres?", "Unds");
+        basket[4] = new Fruits("melocoton", 1, "Cuantos melocotones quieres?", "Unds");
+        basket[5] = new Fruits("manzana", 1, "Cuantas Manzanas quieres?", "Unds");
+            
+        System.out.println("Bienvenido/a a nuestra fruteria. Hoy tenemos la siguiente seleccion de frutas: \nPRODUCTO\tPRECIO");
         TimeUnit.SECONDS.sleep(1);
-        System.out.println(pera.fruitname +"\t\t"+pera.fruitprice + "\n" + platano.fruitname +"\t\t"+platano.fruitprice + "\n" + sandia.fruitname +"\t\t"+sandia.fruitprice + "\n" +  mango.fruitname +"\t\t"+mango.fruitprice + "\n" + melocoton.fruitname +"\t"+melocoton.fruitprice+ "\n" + manzana.fruitname+"\t\t"+manzana.fruitprice);
+        System.out.println(basket[0].fruitname +"\t\t"+basket[0].fruitprice + "\n" + basket[1].fruitname +"\t\t"+basket[1].fruitprice + "\n" + basket[2].fruitname +"\t\t"+basket[2].fruitprice + "\n" +  basket[3].fruitname +"\t\t"+basket[3].fruitprice + "\n" + basket[4].fruitname +"\t"+basket[4].fruitprice+ "\n" + basket[5].fruitname+"\t\t"+basket[5].fruitprice);
         TimeUnit.SECONDS.sleep(1);
         
-        System.out.println("Escribe las frutas que deseas separadas por espacios:  ");
+        System.out.println("Escribe las frutas que deseas separadas por coma:  ");
     
         Scanner in = new Scanner(System.in);
         String userChoice = in.nextLine();
-        System.out.println(userChoice);
-        
-        String[] ary = userChoice.split(" ");
-        System.out.println(Arrays.toString(ary));
-        
+                
+        String[] ary = userChoice.split(",");
+                
         String[] tempArray = new String[ary.length];
         
         for(int i = 0, j = 0; i<ary.length; i++){
-           tempArray[j] = ary[i].toLowerCase();
+           tempArray[j++] = ary[i].trim().toLowerCase();
         }
-        List<String> list = new ArrayList<String>(Arrays.asList(tempArray));
-        list.removeAll(Arrays.asList("", null));
+        
        
         System.out.println(Arrays.toString(tempArray));
-        System.out.println(tempArray[1].getClass());
-        System.out.println(list);
+             
+        for (String fruit:tempArray){
+            boolean flag = false; 
+            for (Fruits basket1 : basket) {
+                if(basket1.fruitname == null ? fruit == null : basket1.fruitname.equals(fruit)){
+                    flag = true;
+                    System.out.println("Si tenemos " + fruit + "s");
+                    System.out.println(basket1.fruitmessage);
+                    String cantidadFruta = in.nextLine();
+                    int intFruta = Integer.parseInt(cantidadFruta);
+                    while (intFruta < 0){
+                        System.out.println("ingresaste un numero negativo, nos vas a regalar fruta? \nVuelve a ingresar un numero");
+                            String cantidadFruta1 = in.nextLine();
+                            intFruta = Integer.parseInt(cantidadFruta1);
+                            }
+                    
+                    int totalxFruta = intFruta * basket1.fruitprice;
+                    subtotal += totalxFruta;
+                    factura = factura + basket1.fruitname + "\t\t" + basket1.fruitprice + "\t\t" + intFruta + "\t\t" + totalxFruta + "\n" ;
+                }
+                
+                
+            }
+            
+            if(!flag){System.out.println("no tenemos " + fruit + " o has ingresado un valor incorrecto");}
+             
+        }
         
+        
+        
+        System.out.println(subtotal);
+        
+        
+         System.out.println(factura);
         
         
         
